@@ -1,0 +1,216 @@
+﻿Build1=Default,b4a.example
+File1=Layout.bal
+File2=Starter.bas
+FileGroup1=Default Group
+FileGroup2=Default Group
+Group=Default Group
+Library1=core
+Library2=xui
+Library3=stringutils
+ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="34"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~CreateResourceFromFile(Macro, Themes.LightTheme)~\n~'End of default text.~\n~
+Module1=|relative|..\Starter
+NumberOfFiles=2
+NumberOfLibraries=3
+NumberOfModules=1
+Version=13.1
+@EndOfDesignText@
+#Region  Project Attributes 
+	#ApplicationLabel: B4A Example
+	#VersionCode: 1
+	#VersionName: 
+	'SupportedOrientations possible values: unspecified, landscape or portrait.
+	#SupportedOrientations: unspecified
+	#CanInstallToExternalStorage: False
+#End Region
+
+#Region  Activity Attributes 
+	#FullScreen: TRUE
+	#IncludeTitle: fALSE
+#End Region
+Sub Globals
+	Dim barPanel As Panel
+	Dim legend() As String = Array As String("Sales1", "Sales2", "Sales3")
+	Dim sales() As Int
+	sales = Array As Int(100000, 120000, 100000, 120000)
+	Dim sales1() As Int
+	sales1 = Array As Int(200000, 130000, 100000, 120000)
+	Dim sales2() As Int
+	sales2 = Array As Int(300000, 320000, 100000, 120000)
+	Dim product() As String
+	product = Array As String("ezware", "atlantic", "gaisano", "lanueva")
+End Sub
+
+Sub Process_Globals
+	
+End Sub
+
+
+Sub Activity_Create(FirstTime As Boolean)
+	barPanel.Initialize("")
+	
+	Activity.AddView(barPanel, 25dip, 30dip, Activity.Width - 50dip, 1000dip)
+	DrawGraph(Activity,barPanel)
+
+End Sub
+
+Sub DrawGraph(Active As Activity,panel As Panel)
+	
+	'Active.AddView(panel, 25dip, 20dip, Active.Width - 50dip, 1000dip)
+	panel.Height = 400dip
+
+	Dim activityPanel As Panel
+	activityPanel.Initialize("activityPanel")
+	
+	activityPanel.Width = 80%x
+	activityPanel.Height = 250dip
+	activityPanel.Color = Colors.ARGB(70, 211, 211, 211)
+	
+	Dim alignLeftCenter As Int = (Active.Width - activityPanel.Width) / 2
+	Dim alignTopCenter As Int = (panel.Height - activityPanel.Height) / 2
+	
+	Dim title As Label
+	title.Initialize("")
+	title.Text = "Total Sales For Companies"
+	title.TextSize = 20
+	title.Typeface = Typeface.MONOSPACE
+	title.Gravity = Gravity.CENTER
+	title.TextColor = Colors.Black
+	
+	' Add legend above the title
+	Dim legendPanel As Panel
+	legendPanel.Initialize("")
+	legendPanel.Width = panel.Width
+	legendPanel.Height = 30dip
+	panel.AddView(legendPanel, panel.Width/2, 0, panel.Width/2, 30dip)
+	
+	
+	Dim color() As Int = Array As Int(Colors.Red, Colors.Green, Colors.Blue)
+	Dim legendWidth As Int = legendPanel.Width / legend.Length
+	
+	For i = 0 To legend.Length - 1
+		Dim colorLabel As Label
+		colorLabel.Initialize("")
+		colorLabel.Color = color(i)
+		legendPanel.AddView(colorLabel, (legendWidth * i)+20dip, 10dip, 10dip, legendPanel.Height-18dip)
+
+		Dim legendLabel As Label
+		legendLabel.Initialize("")
+		legendLabel.Text = legend(i)
+		legendLabel.TextColor = Colors.black  ' Set text color for better visibility
+		legendLabel.Gravity = Gravity.CENTER
+		legendPanel.AddView(legendLabel, (legendWidth * i)+30dip, 0dip, legendWidth-30dip, legendPanel.Height)
+	Next
+
+	' Add title label below the legend
+	panel.AddView(title, 0, alignTopCenter / 2, panel.Width, 30dip)
+	
+	' Add the panel to the activity
+	panel.AddView(activityPanel, alignLeftCenter, alignTopCenter, activityPanel.Width, activityPanel.Height)
+
+	' Create a Canvas object to draw on the panel
+	Dim graphCanvas As Canvas
+	graphCanvas.Initialize(activityPanel)
+
+	' Define the maximum sale value to scale the bars accordingly
+	Dim maxSale As Int = 400000
+
+	Dim cv As Canvas
+	cv.Initialize(panel)
+	
+	Dim totalProducts As Int = sales.Length
+	Dim barsPerProduct As Int = 3 ' Since there are 3 sales categories (sales, sales1, sales2)
+	Dim totalBars As Int = totalProducts * barsPerProduct
+	Dim gap As Int = 5dip
+	Dim productGap As Int = 15dip
+	Dim padding As Int = 20dip
+	Dim availableWidth As Int = activityPanel.Width - (padding * 2) - ((totalProducts - 1) * productGap) - ((totalBars - totalProducts) * gap)
+
+	Dim barWidth As Int = availableWidth / totalBars
+
+	Dim xStart As Int = padding ' Start position after padding
+
+	For i = 0 To totalProducts - 1
+		Dim xPos As Int = xStart + i * (barsPerProduct * (barWidth + gap) + productGap)
+
+		Dim saleValues() As Int = Array As Int(sales(i), sales1(i), sales2(i))
+
+		For j = 0 To barsPerProduct - 1
+			Dim sale As Int = saleValues(j)
+			Dim barHeight As Int = (sale / maxSale) * activityPanel.Height
+			Dim xBar As Int = xPos + j * (barWidth + gap)
+
+			Dim shadowColor As Int = Colors.ARGB(100, 50, 50, 50) ' Semi-transparent dark gray
+			Dim shadowOffset As Int = 3dip
+			Dim shadowRect As Rect
+			shadowRect.Initialize(xBar + shadowOffset, activityPanel.Height - barHeight + shadowOffset, xBar + barWidth + shadowOffset, activityPanel.Height + shadowOffset)
+			graphCanvas.DrawRect(shadowRect, shadowColor, True, 2dip)
+			
+			' Draw bar
+			Dim r As Rect
+			r.Initialize(xBar, activityPanel.Height - barHeight, xBar + barWidth, activityPanel.Height)
+			graphCanvas.DrawRect(r, color(j), True, 2dip)
+
+			' Display sales value
+			Dim labelYPos As Int = activityPanel.Height - barHeight - 5dip
+			graphCanvas.DrawText(FormatNumberWithSuffix(sale), xBar + (barWidth / 2), labelYPos, Typeface.MONOSPACE, 10, Colors.Black, "CENTER")
+		Next
+		Dim productLabelY As Int = activityPanel.Height + alignTopCenter + 20dip
+		Dim productLabelX As Int = alignLeftCenter + 50dip
+		cv.DrawText(product(i), xPos + productLabelX, productLabelY, Typeface.MONOSPACE, 12, Colors.Black, "CENTER")
+	Next
+
+	Dim numLabels As Int = 10
+	For i = 0 To numLabels
+		Dim labelValue As Int = (maxSale / numLabels) * i ' Calculate the corresponding value
+		Dim labelYPos As Int = activityPanel.Height - ((labelValue / maxSale) * activityPanel.Height) ' Adjust Y position based on the scale
+
+		cv.DrawText(FormatNumberWithSuffix(labelValue), alignLeftCenter - 35dip, labelYPos + alignTopCenter + 5dip, Typeface.MONOSPACE, 10, Colors.Black, "LEFT")
+	Next
+End Sub
+
+Sub DrawWrappedTextRotated(canvas As Canvas, text As String, x As Int, y As Int, maxWidth As Int, fontSize As Float, color As Int, alignment As String, angle As Float) As Int
+	Dim words() As String = Regex.Split(" ", text)
+	Dim line As String = ""
+	Dim lineHeight As Int = 20dip ' Space between lines
+	Dim originalY As Int = y ' Store original Y position
+
+	For Each word As String In words
+		Dim testLine As String = line & word & " "
+		Dim textWidth As Int = canvas.MeasureStringWidth(testLine, Typeface.MONOSPACE, fontSize)
+
+		If textWidth > maxWidth And line <> "" Then
+			' Draw the current line
+			canvas.DrawTextRotated(line, x, y, Typeface.DEFAULT_BOLD, fontSize, color, alignment, angle)
+			y = y + lineHeight ' Move to next line
+			line = word & " " ' Start new line
+		Else
+			line = testLine ' Add word to current line
+		End If
+	Next
+
+	' Draw the last line
+	If line <> "" Then
+		canvas.DrawTextRotated(line, x, y, Typeface.DEFAULT_BOLD, fontSize, color, alignment, angle)
+		y = y + lineHeight ' Move final Y position
+	End If
+
+	' Return the new height
+	Return y - originalY
+End Sub
+
+Sub FormatNumberWithSuffix(number As Int) As String
+	If number >= 1000000 Then
+		Return NumberFormat(number / 1000000, 1, 1) & "M"
+	Else If number >= 1000 Then
+		Return NumberFormat(number / 1000, 1, 1) & "k"
+	Else
+		Return NumberFormat(number, 1, 0)
+	End If
+End Sub
+
+
+Sub Activity_Resume
+End Sub
+
+Sub Activity_Pause (UserClosed As Boolean)
+End Sub

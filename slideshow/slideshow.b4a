@@ -1,0 +1,245 @@
+﻿Build1=Default,b4a.example,HU2_ACCEPTALL
+File1=crud.bal
+File2=cyduck.jpg
+File3=Layout.bal
+File4=pokemon.png
+File5=profile.jpg
+FileGroup1=Default Group
+FileGroup2=Default Group
+FileGroup3=Default Group
+FileGroup4=Default Group
+FileGroup5=Default Group
+Group=Default Group
+Library1=core
+Library2=okhttp
+Library3=okhttputils2
+Library4=xui
+Library5=json
+ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="34"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~CreateResourceFromFile(Macro, Themes.LightTheme)~\n~'End of default text.~\n~
+Module1=idlescreensaver
+Module2=saver_screen
+Module3=Starter
+NumberOfFiles=5
+NumberOfLibraries=5
+NumberOfModules=3
+Version=13.1
+@EndOfDesignText@
+#Region  Project Attributes 
+	#ApplicationLabel: B4A Example
+	#VersionCode: 1
+	#VersionName: 
+	'SupportedOrientations possible values: unspecified, landscape or portrait.
+	#SupportedOrientations: unspecified
+	#CanInstallToExternalStorage: False
+#End Region
+
+#Region  Activity Attributes 
+	#FullScreen: False
+	#IncludeTitle: True
+#End Region
+
+Sub Process_Globals
+	'These global variables will be declared once when the application starts.
+	'These variables can be accessed from all modules.
+	Private xui As XUI
+End Sub
+
+Sub Globals
+	Private imgSlide As ImageView ' Use the ImageView from Designer
+	Private Images As List
+	Dim PHPURL As String = "https://192.168.8.142/sample/api.php?action=get_data"
+	Dim TableDetails As List
+	Private ScrollView1 As ScrollView
+	Private idleScreen As idlescreensaver
+	Private On As Button
+	Dim show As Boolean = False
+End Sub
+
+Sub LoadCompanyData
+	Dim Job1 As HttpJob
+	Job1.Initialize("LoadData", Me)
+	Job1.Download(PHPURL)
+	ProgressDialogShow("Loading Data...")
+End Sub
+
+Sub Activity_Create(FirstTime As Boolean)
+	' Load the layout where imgSlide is placed
+	Activity.LoadLayout("Layout")
+	idleScreen.Initialize(Activity,10000) ' Set 10 seconds interval for the idle screen
+
+	' Initialize image list
+	Images.Initialize
+	Images.Add(LoadBitmap(File.DirAssets, "cyduck.jpg"))
+	Images.Add(LoadBitmap(File.DirAssets, "pokemon.png"))
+	Images.Add(LoadBitmap(File.DirAssets, "profile.jpg"))
+	
+	' Initialize and start Timer
+	imgSlide.Visible = False
+	LoadCompanyData
+	ScrollView1.Width = Activity.Width
+	ScrollView1.Height = Activity.Height
+End Sub
+
+Sub JobDone(job As HttpJob)
+	ProgressDialogHide
+	If job.Success = True Then
+		Try
+			Dim parser As JSONParser
+			parser.Initialize(job.GetString)
+			TableDetails = parser.NextArray
+			
+			Dim YPos As Int = 0
+			Dim Margin As Int = 10dip
+			Dim TotalHeight As Int = 0 ' To calculate total height
+			Dim id_display = 1 As Int
+			
+			For Each record As Map In TableDetails
+				Dim name As String = record.Get("name")
+				Dim imageBase64 As String = record.Get("image")
+
+				Dim su As StringUtils
+				Dim ImageBytes() As Byte = su.DecodeBase64(imageBase64)
+
+				Dim ImageView As ImageView
+				ImageView.Initialize("")
+				ImageView.Gravity = Gravity.CENTER_HORIZONTAL
+
+				Dim ImageBitmap As Bitmap
+				Dim InputStream As InputStream
+				InputStream.InitializeFromBytesArray(ImageBytes, 0, ImageBytes.Length)
+				ImageBitmap.Initialize2(InputStream)
+
+				' Resize the image
+				ImageBitmap = ImageBitmap.Resize(100%x, 100%y, True)
+
+				' Apply rounded transformation
+				Dim RoundedBitmap As B4XBitmap = CreateRoundBitmap(ImageBitmap, 25%x)
+				ImageView.Bitmap = RoundedBitmap
+
+				Dim NameLabel As Label
+				NameLabel.Initialize("")
+				NameLabel.Text = name
+				NameLabel.TextSize = 1%y
+				NameLabel.TextColor = Colors.Black
+				NameLabel.Typeface = Typeface.CreateNew(Typeface.SERIF, Typeface.STYLE_Bold)
+				NameLabel.Gravity = Gravity.CENTER
+				
+				Dim StudentIdLabel As Label
+				StudentIdLabel.Initialize("")
+				StudentIdLabel.Text = "SCC-213123-123123"
+				StudentIdLabel.TextSize = 15
+				StudentIdLabel.TextColor = Colors.ARGB(255, 128, 128, 128)
+				StudentIdLabel.Gravity = Gravity.CENTER
+				NameLabel.Typeface = Typeface.CreateNew(Typeface.SERIF, Typeface.STYLE_NORMAL)
+				
+				NameLabel.Typeface = Typeface.DEFAULT_BOLD
+				Dim ItemPanel As Panel
+				ItemPanel.Initialize("ItemPanel")
+				ItemPanel.SetLayout(0, YPos, 100%x, 18%y)
+				ItemPanel.Color = Colors.White
+
+				Dim id As Label
+				id.Initialize("")
+				id.Text = id_display
+				id.TextSize = 24
+				
+				Dim HorizontalLayout As Panel
+				HorizontalLayout.Initialize("")
+				HorizontalLayout.SetLayout(0, 0, ItemPanel.Width, ItemPanel.Height)
+
+				HorizontalLayout.AddView(ImageView, 5%x, 2%y, 25%x, 25%x)
+				HorizontalLayout.AddView(NameLabel, 25%x, 3%y, ItemPanel.Width - ImageView.Width, 5%y)
+				HorizontalLayout.AddView(id, 3%x, 2%y, 5%x, 5%y)
+				HorizontalLayout.AddView(StudentIdLabel, 25%x, 9%y, ItemPanel.Width - ImageView.Width, 5%y)
+				HorizontalLayout.Color = Colors.LightGray
+				HorizontalLayout.Color = Colors.White
+
+				Dim cvs As Canvas
+				cvs.Initialize(HorizontalLayout)
+
+				' Set the border color (black)
+				cvs.DrawLine(HorizontalLayout.Width, 0, HorizontalLayout.Width, HorizontalLayout.Height,Colors.ARGB(255, 16, 64, 34), 5dip) ' Right border
+				cvs.DrawLine(HorizontalLayout.Width, HorizontalLayout.Height, 0, HorizontalLayout.Height, Colors.ARGB(255, 16, 64, 34), 5dip) ' Bottom border
+				
+				ItemPanel.AddView(HorizontalLayout, 0, 0, ItemPanel.Width, ItemPanel.Height)
+				ScrollView1.Panel.AddView(ItemPanel, 0, YPos,ScrollView1.Width, ItemPanel.Height)
+				YPos = YPos + ItemPanel.Height + Margin
+				TotalHeight = YPos ' Update total height
+				id_display = id_display + 1
+			Next
+
+			' Set the height of the ScrollView.Panel to accommodate all items
+			ScrollView1.Panel.Height = Max(TotalHeight, 100%y) ' Ensure at least screen size
+		Catch
+			ToastMessageShow("Error parsing data", True)
+		End Try
+	Else
+		ToastMessageShow("Error: " & job.ErrorMessage, True)
+	End If
+	job.Release
+End Sub
+
+Sub CreateRoundBitmap (Input As B4XBitmap, Size As Int) As B4XBitmap
+	If Input.Width <> Input.Height Then
+		'if the image is not square then we crop it to be a square.
+		Dim l As Int = Min(Input.Width, Input.Height)
+		Input = Input.Crop(Input.Width / 2 - l / 2, Input.Height / 2 - l / 2, l, l)
+	End If
+	Dim c As B4XCanvas
+	Dim xview As B4XView = xui.CreatePanel("")
+	xview.SetLayoutAnimated(0, 0, 0, Size, Size)
+	c.Initialize(xview)
+	Dim path As B4XPath
+	path.InitializeOval(c.TargetRect)
+	c.ClipPath(path)
+	c.DrawBitmap(Input.Resize(Size, Size, False), c.TargetRect)
+	c.RemoveClip
+	c.DrawCircle(c.TargetRect.CenterX, c.TargetRect.CenterY, c.TargetRect.Width / 2 - 2dip, Colors.ARGB(128, 0, 0, 0), False, 1dip) 'comment this line to remove the border
+	c.Invalidate
+	Dim res As B4XBitmap = c.CreateBitmap
+	c.Release
+	Return res
+End Sub
+
+Sub ItemPanel_Touch (Action As Int, X As Float, Y As Float)
+	Log("User is Active Now (ItemPanel Touched)")
+End Sub
+
+Sub ScrollView1_Touch (Action As Int, X As Float, Y As Float)
+	If Action = 0 Then ' ACTION_DOWN event
+		Log("User is Active (ScrollView Touched)")
+	End If
+End Sub
+
+Private Sub On_Click
+	If show = False Then
+		Log("on")
+		idleScreen.ShowScreenSaver(True)
+		ScrollView1.Visible = False
+		show = True
+		On.Text = "Off"
+	Else
+		ScrollView1.Visible = True
+		idleScreen.ShowScreenSaver(False)
+		Log("off")
+		show = False
+		On.Text = "On"
+	End If
+	Log(show)
+End Sub
+
+Sub Activity_Resume
+End Sub
+
+Sub Activity_Pause (UserClosed As Boolean)
+End Sub
+
+Sub Button1_Click
+	xui.MsgboxAsync("Hello world!", "B4X")
+End Sub
+
+Private Sub Off_Click
+	
+End Sub
+
+

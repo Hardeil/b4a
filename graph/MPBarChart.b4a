@@ -1,0 +1,104 @@
+﻿Version=5.2
+NumberOfModules=1
+Module1=Starter
+Build1=Default,JHS.MPBarChart
+ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: http://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="5" android:targetSdkVersion="14"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~SetApplicationAttribute(android:theme, "@android:style/Theme.Holo")~\n~'End of default text.~\n~
+IconFile=
+NumberOfFiles=1
+File1=main.bal
+NumberOfLibraries=2
+Library1=core
+Library2=mpchartlib
+@EndOfDesignText@
+#Region  Project Attributes 
+	#ApplicationLabel: MPBarChart
+	#VersionCode: 1
+	#VersionName: 
+	'SupportedOrientations possible values: unspecified, landscape or portrait.
+	#SupportedOrientations: landscape
+	#CanInstallToExternalStorage: False
+#End Region
+
+#Region  Activity Attributes 
+	#FullScreen: False
+	#IncludeTitle: True
+#End Region
+
+Sub Process_Globals
+	'These global variables will be declared once when the application starts.
+	'These variables can be accessed from all modules.
+
+End Sub
+
+Sub Globals
+	'These global variables will be redeclared each time the activity is created.
+	'These variables can only be accessed from this module.
+
+	Private mbc1 As BarChart
+	
+End Sub
+
+Sub Activity_Create(FirstTime As Boolean)
+	'Do not forget to load the layout file created with the visual designer. For example:
+	Activity.LoadLayout("main")
+	
+'    RIGHT_OF_CHART, RIGHT_OF_CHART_CENTER, RIGHT_OF_CHART_INSIDE,
+'    LEFT_OF_CHART, LEFT_OF_CHART_CENTER, LEFT_OF_CHART_INSIDE,
+'    BELOW_CHART_LEFT, BELOW_CHART_RIGHT, BELOW_CHART_CENTER,
+
+'   LINE, CIRCLE, SQUARE
+    mbc1.LegendShapeSize = 7.0	    'this line of code needs to be before mbc1.setTheLegendPositionAndForm("BELOW_CHART_CENTER", "CIRCLE")
+	mbc1.setTheLegendPositionAndForm("BELOW_CHART_CENTER", "CIRCLE")    'pass strings from the above comments
+	
+	mbc1.TheLegendColor = Colors.yellow
+	mbc1.TheLegendTextSize = 20.0
+	mbc1.LegendTitle = ""
+
+	mbc1.ChartDescription = "TITLE : Some Arbitrary Data"
+	mbc1.ChartDescriptionColor = Colors.Blue
+	mbc1.ChartDescriptionTextSize = 17
+	mbc1.setDescriptionPosition(mbc1.left + 14%x ,mbc1.top + 1%y)
+	
+	mbc1.ValueTextColor = Colors.Black
+	mbc1.ValueTextSize = 10.0
+
+    'the following 3 arrays must have the same number of entries/elements
+	mbc1.BarColors = Array As Int(Colors.Blue, Colors.Yellow, Colors.Green, Colors.Red, Colors.Magenta, Colors.Cyan, Colors.Blue, Colors.Yellow, Colors.Green, Colors.Red, Colors.Magenta, Colors.Cyan)
+	mbc1.LegendText = Array As String("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+	mbc1.ChartData = Array As Float(52.3, -16.7, 46.0, -40.5, 101.6, 40.9, 15.7, 25.9, 35.6, -25.3, 67.5, 75.2)    'values - it will be converted to %
+
+    mbc1.DoubleTapToZoomEnabled = True
+	mbc1.DrawBarShadow = False
+	mbc1.GridBackgroundColor = Colors.white
+	mbc1.ValueTextColor = 0XFFFFA500
+	mbc1.DrawBorders = True
+	mbc1.DrawGridBackground = True
+	mbc1.DrawHighlightArrow = True
+	mbc1.DrawValueAboveBar = True
+	mbc1.PinchZoom = True
+	mbc1.ScaleEnabled = True
+	mbc1.BorderColor = Colors.Yellow
+	mbc1.BorderWidth = 3.0
+
+'   TOP, BOTTOM, BOTH_SIDED, TOP_INSIDE, BOTTOM_INSIDE
+    mbc1.XaxisLabelPosition = "BOTTOM"
+	mbc1.XaxisTextSize = 15.0
+	mbc1.XaxisTextColor = Colors.Magenta
+	
+	mbc1.DrawYaxisGridLines = True
+	mbc1.YaxisTextColor = Colors.Green
+	mbc1.YaxisTextSize = 15.0
+
+    
+	mbc1.BarData = 12   'this number must be the same as the number of elements in the above arrays  
+
+End Sub
+
+Sub Activity_Resume
+
+End Sub
+
+Sub Activity_Pause (UserClosed As Boolean)
+
+End Sub
+

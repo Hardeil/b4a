@@ -1,0 +1,116 @@
+﻿Build1=Default,b4a.example
+File1=(5) After Effects Tutorial_ Product Slideshow Animation Tutorial - YouTube - Google Chrome 2025-02-04 10-20-51.mp4
+File2=backg.mp4
+File3=background.mp4
+File4=gif.gif
+File5=Layout.bal
+File6=sample.mp4
+FileGroup1=Default Group
+FileGroup2=Default Group
+FileGroup3=Default Group
+FileGroup4=Default Group
+FileGroup5=Default Group
+FileGroup6=Default Group
+Group=Default Group
+Library1=animation
+Library10=simplemediamanager
+Library2=audio
+Library3=core
+Library4=fileprovider
+Library5=mediachooser
+Library6=phone
+Library7=viewsex
+Library8=xui
+Library9=xui views
+ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="34"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~CreateResourceFromFile(Macro, Themes.LightTheme)~\n~'End of default text.~\n~
+Module1=Starter
+NumberOfFiles=6
+NumberOfLibraries=10
+NumberOfModules=1
+Version=13.1
+@EndOfDesignText@
+Sub Process_Globals
+	Dim PE As PhoneEvents
+	Dim LastActiveTime As Long
+	Dim IdleThreshold As Long = 7000 ' 7 seconds
+	Dim TimerCheck As Timer
+	Dim mp As MediaPlayer ' MediaPlayer for controlling playback
+	Dim videoFile As String = "backg.mp4"
+End Sub
+
+Sub Globals
+	Dim Panel1 As Panel
+End Sub
+
+Sub Activity_Create(FirstTime As Boolean)
+	PE.Initialize("PE")
+	Activity.LoadLayout("Layout")
+	LastActiveTime = DateTime.Now
+
+	TimerCheck.Initialize("TimerCheck", 1000) ' Check every second
+	TimerCheck.Enabled = True
+
+	' Initialize MediaPlayer
+	mp.Initialize
+
+	' Ensure video file is copied
+	If File.Exists(File.DirInternal, videoFile) = False Then
+		File.Copy(File.DirAssets, videoFile, File.DirInternal, videoFile)
+	End If
+
+	Panel1.Visible = False
+	mp.SetDataSource(File.DirInternal, videoFile)
+	mp.PrepareAsync
+	mp.Looping = True ' Optional, if you want the video to loop
+End Sub
+
+' Detect key press
+Sub PE_KeyPress (KeyCode As Int) As Boolean
+	LastActiveTime = DateTime.Now
+	Log("User is Active (Key Pressed)")
+	Return False
+End Sub
+
+' Detect screen touch
+Sub Activity_Touch (Action As Int, X As Float, Y As Float)
+	LastActiveTime = DateTime.Now
+	Log("User is Active (Screen Touched)")
+End Sub
+
+' Check if the user is idle
+Sub TimerCheck_Tick
+	If (DateTime.Now - LastActiveTime) > IdleThreshold Then
+		Log("Phone is Idle - Playing Video")
+		If mp.IsPlaying = False Then
+			mp.Start
+		End If
+		Panel1.Visible = True
+	Else
+		Log("Phone is Active - Stopping Video")
+		If mp.IsPlaying Then
+			mp.Pause
+		End If
+		Panel1.Visible = False
+	End If
+End Sub
+
+' Event triggered when video ends
+Sub mp_Completion
+	Log("Video Complete - Restarting")
+	If mp.IsPlaying = False Then
+		mp.Start ' Restart video after completion
+	End If
+End Sub
+
+' Set playback speed
+Sub SetPlaybackSpeed(speed As Float)
+	Dim playbackParams As Object = mp.GetPlaybackParams
+	playbackParams.SetSpeed(speed) ' speed is a value like 0.5 for slow, 1.0 for normal, 2.0 for fast
+	mp.SetPlaybackParams(playbackParams)
+End Sub
+
+' Call SetPlaybackSpeed to set the video speed (e.g., 0.5 for slower playback)
+Sub Activity_Resume
+	SetPlaybackSpeed(0.5) ' 0.5 is slower than normal, change this value as needed
+End Sub
+
