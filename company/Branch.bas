@@ -21,7 +21,7 @@ End Sub
 Sub Globals
 	'These global variables will be redeclared each time the activity is created.
 	'These variables can only be accessed from this module.Private ScrollView1 As ScrollView
-	Dim PHPURL As String = "https://192.168.8.141/Company/fetch.php?action=get_branch&company_id="&Starter.company_selected
+	Dim PHPURL As String = "https://192.168.8.192/Company/fetch.php?action=get_branch&company_id="&Starter.company_selected
 	Dim TableDetails As List
 	Private ScrollView1 As ScrollView
 	Private LabelTitle As Label
@@ -67,11 +67,11 @@ Sub JobDone(job As HttpJob)
 		Try
 			Dim parser As JSONParser
 			parser.Initialize(job.GetString)
-			TableDetails = parser.NextArray
+			
 			
 			Select Case job.JobName
 				Case "GetData"
-					
+					TableDetails = parser.NextArray
 					totalTarget.RemoveView
 					Dim numColumns As Int = 2 ' Adjust based on preference
 					Dim pnlWidth As Int = Activity.Width - 100dip
