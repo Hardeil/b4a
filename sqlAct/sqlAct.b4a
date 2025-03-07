@@ -1,0 +1,245 @@
+﻿Build1=Default,b4a.example,HU2_ACCEPTALL
+File1=Calendar.png
+File2=crud.bal
+File3=Dash.bal
+File4=network-security-config.xml
+File5=OkHttpUtils2.b4xlib
+File6=pokemon.png
+File7=profile.jpg
+File8=Schedule.bal
+FileGroup1=Default Group
+FileGroup2=Default Group
+FileGroup3=Default Group
+FileGroup4=Default Group
+FileGroup5=Default Group
+FileGroup6=Default Group
+FileGroup7=Default Group
+FileGroup8=Default Group
+Group=Default Group
+Library1=core
+Library2=json
+Library3=okhttp
+Library4=phone
+Library5=sql
+Library6=xui
+Library7=okhttputils2
+ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="34" />~\n~<supports-screens ~\n~    android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true" />~\n~)~\n~~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~'SetApplicationAttribute(android:networkSecurityConfig, "@xml/network_security_config")~\n~CreateResourceFromFile(Macro, Themes.LightTheme)~\n~~\n~'End of default text.~\n~
+Module1=Charts
+Module2=CircularProgressBar
+Module3=Dash
+Module4=graph
+Module5=Schedule
+Module6=Starter
+NumberOfFiles=8
+NumberOfLibraries=7
+NumberOfModules=6
+Version=13.1
+@EndOfDesignText@
+#Region  Activity Attributes 
+    #FullScreen: False
+    #IncludeTitle: False
+#End Region
+
+Sub Process_Globals
+	' Global variables that can be accessed across modules.
+	Private xui As XUI
+End Sub
+
+Sub Globals
+	Private Panel3 As Panel
+	Private Panel2 As Panel
+End Sub
+
+Sub LoadMySQLData
+
+End Sub
+
+Sub DrawBorder(cvs As Canvas, width As Int, height As Int, borderColor As Int, borderWidth As Int)
+	cvs.DrawLine(0, 0, width, 0, borderColor, borderWidth) ' Top border
+	cvs.DrawLine(width, 0, width, height, borderColor, borderWidth) ' Right border
+	cvs.DrawLine(width, height, 0, height, borderColor, borderWidth) ' Bottom border
+	cvs.DrawLine(0, height, 0, 0, borderColor, borderWidth) ' Left border
+End Sub
+
+Sub Activity_Create(FirstTime As Boolean)
+	Activity.LoadLayout("dash")
+	Dim borderColor As Int = Colors.Black
+	Dim borderWidth As Int = 2dip
+	Dim cvs As Canvas
+	Panel2.SetLayout(28%x,50%y,250dip,250dip)
+	
+
+	Dim roomNo As Label
+	roomNo.Initialize("")
+	roomNo.Text = "Room No."
+	roomNo.TextSize = 16
+	roomNo.TextColor = Colors.Black
+	roomNo.Typeface = Typeface.DEFAULT_BOLD
+	roomNo.Gravity = Gravity.CENTER
+	Panel3.AddView(roomNo, 2.6%x, 20dip, 120dip, 35dip)
+		
+	cvs.Initialize(roomNo)
+	DrawBorder(cvs, roomNo.Width, roomNo.Height, borderColor, borderWidth)
+	
+	Dim status As Label
+	status.Initialize("")
+	status.Text = "Status"
+	status.TextSize = 16
+	status.TextColor = Colors.Black
+	status.Typeface = Typeface.DEFAULT_BOLD
+	status.Gravity = Gravity.CENTER
+	Panel3.AddView(status, Activity.Width-24%x, 20dip, 120dip, 35dip) ' Customize the position and size
+	
+	cvs.Initialize(status)
+	DrawBorder(cvs, status.Width, status.Height, borderColor, borderWidth)
+
+	Dim teacherDetail As Panel
+	teacherDetail .Initialize("")
+	teacherDetail.Color = Colors.RGB(18,66,36)
+	Panel3.AddView(teacherDetail , 2.5%x, 80dip, Activity.Width-5%x, 32%x)
+	CreateRadius(teacherDetail)
+	
+	Dim profile As ImageView
+	profile.Initialize("")
+	profile.BringToFront
+	Panel3.AddView(profile , Activity.Width-68%x, -30dip, 37%x, 37%x)
+	
+	Dim originalBitmap As B4XBitmap = xui.LoadBitmapResize(File.DirAssets, "profile.jpg", 100%x, 100%y, False)
+	Dim circularBitmap As B4XBitmap = CreateRoundBitmap(originalBitmap, 14%y)
+	profile .Bitmap = circularBitmap
+
+	
+	Dim teacherName As Label
+	teacherName.Initialize("")
+	teacherName.Gravity = Gravity.CENTER
+	teacherName.Text = "Angel Santos"
+	teacherName.TextSize = 5%x
+	teacherName.TextColor = Colors.White
+	teacherName.Typeface = Typeface.DEFAULT_BOLD
+	teacherName.Typeface = Typeface.SERIF
+	teacherDetail.AddView(teacherName , 0, 8%y, teacherDetail.Width, 10%x)
+	
+	Dim teacherTitle As Label
+	teacherTitle.Initialize("")
+	teacherTitle.Gravity = Gravity.CENTER
+	teacherTitle.Text = "Teacher Name"
+	teacherTitle.TextSize = 2.5%x
+	teacherTitle.TextColor = Colors.ARGB(128, 255, 255, 255)
+	teacherDetail.AddView(teacherTitle , 0, teacherName.Top + 4.2%y, teacherDetail.Width, 10%x)
+	
+	Dim subject As Panel
+	subject.Initialize("")
+	subject.Color = Colors.RGB(18,66,36)
+	Panel3.AddView(subject, 1.6%y ,teacherDetail.Top + 21.5%y,55%x, 110dip)
+	CreateRadius(subject)
+	
+
+	Dim totalStudents As Panel
+	totalStudents.Initialize("")
+	totalStudents.Color = Colors.Transparent ' Set transparent to apply drawable
+	Panel3.AddView(totalStudents, 60%x ,teacherDetail.Top + 21.5%y,37.5%x, 110dip)
+	CreateRadius(totalStudents)
+	
+	Dim activeStudents As Label
+	activeStudents.Initialize("")
+	activeStudents.Text = "No. of Student in the Classroom"
+	activeStudents.Gravity = Gravity.CENTER
+	activeStudents.TextSize = 15dip
+	Panel3.AddView(activeStudents, 0 ,Panel2.Top + 20%y,Panel3.Width, 50dip)
+	
+	Log(Activity.Width & "this is widht")
+	Log(Activity.Height & "this is Height")
+	
+	If Activity.Width > 800 Then
+		teacherDetail.SetLayout(10dip,12%y,Activity.Width-90%y,220dip)
+		profile.SetLayout(2.5%x,teacherDetail.Top + 3%y,32%y,32%y)
+		Dim circularBitmap As B4XBitmap = CreateRoundBitmap(originalBitmap, 28%y)
+		profile .Bitmap = circularBitmap
+		teacherName.SetLayout(16%x,10%y,teacherDetail.Width-17%x,10%y)
+		teacherName.TextSize = 3.5%y
+		teacherTitle.SetLayout(16%x,teacherName.Top+5%y,teacherDetail.Width-17%x,10%y)
+		teacherTitle.TextSize = 2.5%y
+		teacherDetail.SendToBack
+		subject.SetLayout(1%x,teacherDetail.Top + teacherDetail.Height + 2.5%y,300dip,100dip)
+		totalStudents.SetLayout(subject.Left+subject.Width+1%x,teacherDetail.Top + teacherDetail.Height + 2.5%y,192dip,100dip)
+		Panel2.SetLayout(62%x,20%y,250dip,250dip)
+		activeStudents.SetLayout(Panel2.Left-2%x,Panel2.Top+Panel2.Height-40dip,Panel2.Width+50dip, 50dip)
+		roomNo.Left = 1%x
+		status.Left = 39%x
+	End If
+	
+End Sub
+
+Sub CreateRadius(totalStudents As Panel)
+	' Create a circular drawable
+	Dim bg As GradientDrawable
+	bg.Initialize("TOP_BOTTOM", Array As Int(Colors.RGB(18,66,36), Colors.RGB(18,66,36)))
+	bg.CornerRadius = 7dip  ' Half of height to make it circular
+
+	' Apply to panel
+	totalStudents.Background = bg
+End Sub
+
+Sub CreateRoundBitmap (Input As B4XBitmap, Size As Int) As B4XBitmap
+	If Input.Width <= 0 Or Input.Height <= 0 Then
+		Log("Error: Invalid bitmap dimensions.")
+		Return Null
+	End If
+
+	' Ensure the input image is square
+
+	If Input.Width <> Input.Height Then
+		Dim l As Int = Min(Input.Width, Input.Height)
+		Input = Input.Crop(Input.Width / 2 - l / 2, Input.Height / 2 - l / 2, l, l)
+	End If
+
+	Dim c As B4XCanvas
+	Dim xview As B4XView = xui.CreatePanel("")
+	xview.SetLayoutAnimated(0, 0, 0, Size, Size)
+	c.Initialize(xview)
+	' Create a round shape for clipping
+	Dim path As B4XPath
+	path.InitializeOval(c.TargetRect)
+	c.ClipPath(path)
+
+	' Resize and draw the bitmap
+	Dim resizedBitmap As B4XBitmap = Input.Resize(Size, Size, False)
+	c.DrawBitmap(resizedBitmap, c.TargetRect)
+
+	c.RemoveClip
+
+	' Draw a border around the image
+	c.DrawCircle(c.TargetRect.CenterX, c.TargetRect.CenterY, c.TargetRect.Width / 2 - 2dip, Colors.White, False, 5dip)
+	c.Invalidate
+
+	' Create and return the round bitmap
+	Dim res As B4XBitmap = c.CreateBitmap
+	c.Release
+	Return res
+End Sub
+
+
+
+Sub Activity_Resume
+	' Code for activity resume
+End Sub
+
+Sub Activity_Pause (UserClosed As Boolean)
+	' Code for activity pause
+End Sub
+
+Sub btnGoToSecond_Click
+	StartActivity("Schedule") ' Navigate to SecondActivity
+	Activity.Finish
+End Sub
+Private Sub Label6_Click
+	StartActivity("Dash")
+	Activity.Finish
+	Log("yoww")
+End Sub
+
+Private Sub Label5_Click
+	StartActivity("Dash")
+	Activity.Finish
+	Log("yoww")
+End Sub

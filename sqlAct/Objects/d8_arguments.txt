@@ -1,0 +1,70 @@
+--release
+--output
+C:\Users\user\Documents\New folder\sqlAct\Objects
+--lib
+C:\android\platforms\android-34\android.jar
+--min-api
+21
+C:\android\tools\..\extras\b4a_local\unpacked-b4ashared-63872326516000\dex_v1\b4ashared.zip
+C:\android\tools\..\extras\b4a_local\unpacked-debug-63872326518000\dex_v1\debug.zip
+c:\android\tools\..\extras\b4a_remote\androidx\multidex\multidex\2.0.1\unpacked-multidex-2.0.1\jars\classes.zip
+C:\android\tools\..\extras\b4a_local\unpacked-core-63872326518000\dex_v1\core.zip
+C:\android\tools\..\extras\b4a_local\unpacked-json-63872326518000\dex_v1\json.zip
+C:\android\tools\..\extras\b4a_local\unpacked-okhttp-63872326518000\dex_v1\okhttp.zip
+C:\android\tools\..\extras\b4a_local\unpacked-phone-63872326518000\dex_v1\phone.zip
+C:\android\tools\..\extras\b4a_local\unpacked-sql-63872326518000\dex_v1\sql.zip
+C:\android\tools\..\extras\b4a_local\unpacked-xui-63872326518000\dex_v1\xui.zip
+C:\android\tools\..\extras\b4a_local\unpacked-okhttp-4.9.0-63872326518000\dex_v1\okhttp-4.9.0.zip
+C:\android\tools\..\extras\b4a_local\unpacked-okio-2.8.0-63872326518000\dex_v1\okio-2.8.0.zip
+C:\android\tools\..\extras\b4a_local\unpacked-okhttp-urlconnection-4.9.3-63872326518000\dex_v1\okhttp-urlconnection-4.9.3.zip
+C:\android\tools\..\extras\b4a_local\unpacked-org.jetbrains.kotlin-kotlin-stdlib-63872326518000\dex_v1\org.jetbrains.kotlin-kotlin-stdlib.zip
+C:\android\tools\..\extras\b4a_local\unpacked-stringutils-63872326518000\dex_v1\stringutils.zip
+C:\android\tools\..\extras\b4a_local\unpacked-javaobject-63872326518000\dex_v1\javaobject.zip
+C:\android\tools\..\extras\b4a_local\unpacked-remotelogger-63872326518000\dex_v1\remotelogger.zip
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\charts$_bardata.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\charts$_graph.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\charts$_graphinternal.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\charts$_linedata.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\charts$_linepoint.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\charts$_piedata.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\charts$_pieitem.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\charts.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\circularprogressbar$ResumableSub_AnimateValueTo.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\circularprogressbar.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\dash$1.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\dash$B4AMenuItemsClickListener.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\dash$HandleKeyDelayed.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\dash$ResumeMessage.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\dash$WaitForLayout.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\dash.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\graph$1.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\graph$B4AMenuItemsClickListener.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\graph$HandleKeyDelayed.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\graph$ResumeMessage.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\graph$WaitForLayout.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\graph.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\httpjob$_multipartfiledata.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\httpjob.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\httputils2service.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\main$1.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\main$B4AMenuItemsClickListener.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\main$HandleKeyDelayed.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\main$ResumeMessage.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\main$WaitForLayout.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\main.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\R$drawable.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\R$style.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\R.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\schedule$1.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\schedule$B4AMenuItemsClickListener.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\schedule$HandleKeyDelayed.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\schedule$ResumeMessage.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\schedule$WaitForLayout.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\schedule.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\starter$1.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\starter$2.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\starter$starter_BR.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\starter.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\designerscripts\LS_crud.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\designerscripts\LS_dash.dex
+C:\Users\user\Documents\New folder\sqlAct\Objects\dexed\b4a\example\designerscripts\LS_schedule.dex
